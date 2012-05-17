@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>CaliforniumAppServer</name>
-	<comment></comment>
+	<name>Actinium</name>
+	<comment>Actinium (Ac) App-server for Californium</comment>
 	<projects>
 	</projects>
 	<buildSpec>
