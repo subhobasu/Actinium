@@ -3,6 +3,8 @@ package ch.ethz.inf.vs.actinium.jscoap.jserror;
 
 public class NetworkErrorException extends RequestErrorException {
 
+	private static final long serialVersionUID = -1781934300982074011L;
+
 	public NetworkErrorException() {
 		super();
 	}

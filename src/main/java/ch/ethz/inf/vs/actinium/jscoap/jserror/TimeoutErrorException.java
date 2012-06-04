@@ -2,6 +2,8 @@ package ch.ethz.inf.vs.actinium.jscoap.jserror;
 
 public class TimeoutErrorException extends RequestErrorException {
 
+	private static final long serialVersionUID = 8201481582666993805L;
+
 	public TimeoutErrorException() {
 		super();
 	}

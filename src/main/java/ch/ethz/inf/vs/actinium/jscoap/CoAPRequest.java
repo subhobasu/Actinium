@@ -66,7 +66,7 @@ public class CoAPRequest implements CoAPConstants {
 	
 	// request
 	public String uri; // target of the request
-	public boolean async; // true, if request shall be sent assynchronously
+	public boolean async; // true, if request shall be sent asynchronously
 	public String method; // "GET", "POST", "PUT" or "DELETE"
 	public String locationPath; // request's location path
 	public long timeout; // milliseconds (timeout==0 ==> no timeout)
@@ -75,12 +75,12 @@ public class CoAPRequest implements CoAPConstants {
 	
 	// status
 	public volatile boolean send; // true, if request has been sent
-	public volatile boolean error; // true, if error has occured
+	public volatile boolean error; // true, if error has occurred
 
 	public volatile int readyState; // 0,1,4
-	public volatile int httpstatus; // Http status
+	public volatile int httpstatus; // HTTP status
 	public volatile int status; // CoAP status
-	public volatile String statusText; // Coap status as string
+	public volatile String statusText; // CoAP status as string
 	
 	// internal
 	public Map<Integer, List<Option>> options = new HashMap<Integer, List<Option>>();
@@ -89,20 +89,20 @@ public class CoAPRequest implements CoAPConstants {
 	private Sender sender;
 	
 	/**
-	 * Open connection to specified uri. Resets state from last request.
+	 * Open connection to specified URI. Resets state from last request.
 	 * @param method "GET", "POST", "PUT" or "DELETE"
-	 * @param uri the uri
+	 * @param uri the URI
 	 */
 	public void open(String method, String uri) {
 		open(method, uri, true);
 	}
 
 	/**
-	 * Open connection to specified uri. Creates request. Resets state from last
+	 * Open connection to specified URI. Creates request. Resets state from last
 	 * request.
 	 * 
 	 * @param method "GET", "POST", "PUT" or "DELETE"
-	 * @param uri the uri
+	 * @param uri the URI
 	 * @param async true, if asynchronous request
 	 */
 	public synchronized void open(String method, String uri, boolean async) {
@@ -506,11 +506,11 @@ public class CoAPRequest implements CoAPConstants {
 		
 		/*
 		 * set options, create a new list with the options, so that the request
-		 * is independant on the lists and the hashmap options
+		 * is independent on the lists and the hashmap options
 		 */
 		for (Integer i:options.keySet()) {
 			List<Option> list = options.get(i);
-			request.setOptions(i, new LinkedList<Option>(list));
+			request.setOptions(new LinkedList<Option>(list));
 		}
 		
 		if (locationPath!=null)
@@ -523,9 +523,9 @@ public class CoAPRequest implements CoAPConstants {
 	}
 	
 	/**
-	 * Returns true, if the specified uri is typed correctly.
-	 * @param uri the uri.
-	 * @return true, if the specified uri is typed correctly.
+	 * Returns true, if the specified URI is typed correctly.
+	 * @param uri the URI.
+	 * @return true, if the specified URI is typed correctly.
 	 */
 	private boolean isValidURI(String uri) {
 		// let class util.net.URI check

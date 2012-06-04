@@ -8,6 +8,8 @@ package ch.ethz.inf.vs.actinium.cfg;
  */
 public class Config extends AbstractConfig {
 
+	private static final long serialVersionUID = 1132829953418308387L;
+
 	// global configuration constants
 	public static final String PATH = "appserver/config.cfg";
 	

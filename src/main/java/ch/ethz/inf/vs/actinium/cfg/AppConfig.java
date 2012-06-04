@@ -32,6 +32,8 @@ import ch.ethz.inf.vs.californium.coap.POSTRequest;
  */
 public class AppConfig extends AbstractConfig {
 
+	private static final long serialVersionUID = -318048901712176295L;
+
 	public static final String UNNAMED = "unnamed"; // if an app has no name (should not happen)
 
 	// keys for AppConfig

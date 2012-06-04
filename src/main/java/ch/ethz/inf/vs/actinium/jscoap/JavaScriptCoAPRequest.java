@@ -13,6 +13,8 @@ import ch.ethz.inf.vs.californium.coap.Response;
 
 public class JavaScriptCoAPRequest extends ScriptableObject implements CoAPConstants {
 
+	private static final long serialVersionUID = 2269672652051004591L;
+
 	private Request request;
 	
 	private Response response = new Response();;

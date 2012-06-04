@@ -49,15 +49,13 @@ import ch.ethz.inf.vs.californium.endpoint.Resource;
  */
 public abstract class AbstractConfig extends Properties {
 
-	/*
-	 * Resource for this config. First need to be created with an identifier
-	 */
+	private static final long serialVersionUID = 1533763543185322735L;
+
+	// Resource for this config must be created with an identifier
 	private LocalResource cfgres = null;
 	
-	// The path, where this config shall be stored to if not meantioned otherwise
+	// The path, where this config shall be stored to if not mentioned otherwise
 	private String configPath;
-	
-//	private boolean changed;
 	
 	private ConfigObvervable observable;
 	
@@ -72,10 +70,6 @@ public abstract class AbstractConfig extends Properties {
 		this.configPath = configPath;
 	}
 	
-//	public void setChanged() {
-//		setChanged(true);
-//	}
-	
 	public LocalResource createConfigResource(String identifier) {
 		this.cfgres = new ConfigResource(identifier.toLowerCase());
 		return cfgres;
@@ -84,14 +78,6 @@ public abstract class AbstractConfig extends Properties {
 	public Resource getConfigResource() {
 		return cfgres;
 	}
-	
-//	public void setChanged(boolean bool) {
-//		this.changed = bool;
-//	}
-//
-//	public boolean hasChanged() {
-//		return changed;
-//	}
 	
 	public Observable getObservable() {
 		return observable;
@@ -163,7 +149,6 @@ public abstract class AbstractConfig extends Properties {
 	public void store() {
 		System.out.println("Store config to file "+configPath);
 		storeProperties(configPath);
-//		changed = false;
 	}
 	
 	public void deleteConfig() throws IOException {
@@ -187,7 +172,6 @@ public abstract class AbstractConfig extends Properties {
 	protected void loadProperties(String path) {
 		try {
 			FileInputStream stream = new FileInputStream(path);
-//			InputStream stream = Config.class.getResourceAsStream(path);
 			try {
 				load(stream);
 			} finally {
@@ -216,15 +200,6 @@ public abstract class AbstractConfig extends Properties {
 		}
 	}
 	
-//	@Override
-//	public synchronized Object put(Object key, Object value) {
-//		Object old = super.put(key, value);
-//		if (old!=value) {
-////			setChanged();
-//		}
-//		return old;
-//	}
-	
 	public boolean isModifiable(String key) {
 		return true;
 	}
@@ -252,13 +227,11 @@ public abstract class AbstractConfig extends Properties {
 			for (String key:p.stringPropertyNames()) 
 				System.out.println("	"+key+" = >"+p.get(key)+"< "+isModifiable(key));
 			
-//			clear();
 			for (String key:this.stringPropertyNames()) {
 				if (isModifiable(key))
 					remove(key);
 			}
 
-//			putAll(p);
 			ConfigChangeSet changes = new ConfigChangeSet();
 			for (String key:p.stringPropertyNames()) {
 				if (isModifiable(key)) {
@@ -288,7 +261,6 @@ public abstract class AbstractConfig extends Properties {
 			for (String key:p.stringPropertyNames()) 
 				System.out.println("	"+key+" = >"+p.get(key)+"< "+(isModifiable(key)?"modifiable":"unmodifiable"));
 
-//			putAll(p);
 			ConfigChangeSet changes = new ConfigChangeSet();
 			for (String key:p.stringPropertyNames()) {
 				if (isModifiable(key)) {
@@ -348,6 +320,8 @@ public abstract class AbstractConfig extends Properties {
 	}
 	
 	public static class ConfigChangeSet extends HashSet<String> {
+		private static final long serialVersionUID = 3833165415676915271L;
+		
 		public ConfigChangeSet() {}
 		public ConfigChangeSet(String... changes) {
 			for (String str:changes)
