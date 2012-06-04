@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="lib/E4XUtils.jar"/>
-	<classpathentry kind="lib" path="lib/js.jar" sourcepath="lib/rhino1_7R3.zip"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Californium"/>
-	<classpathentry kind="output" path="bin"/>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.8.1/junit-4.8.1.jar" sourcepath="M2_REPO/junit/junit/4.8.1/junit-4.8.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/ch/ethz/inf/vs/californium/0.8.2-SNAPSHOT/californium-0.8.2-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/mozilla/rhino/1.7R3/rhino-1.7R3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/ibm/uk/e4x-utils/1.0-2005-02-28/e4x-utils-1.0-2005-02-28.jar"/>
 </classpath>
