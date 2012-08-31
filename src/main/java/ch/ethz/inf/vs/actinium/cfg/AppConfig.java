@@ -181,4 +181,5 @@ public class AppConfig extends AbstractConfig {
 			this.put(key.toString().toLowerCase(), value);
 		}
 	}
+
 }

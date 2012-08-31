@@ -1,4 +1,22 @@
-Übersicht
+Actinium (Ac) App-server for Californium
+========================================
+
+Actinium is a RESTful runtime container for scripted Internet of Things
+applications. It integrates Rhino to run JavaScript apps and provides a
+convenient scripting API for CoAP.
+Apps can be dynamically installed, instantiated, stopped, and deleted, also in a
+RESTful manner.
+
+Actinium is a Maven project. Use "mvn clean install" in the root directory to
+build everything.
+
+If you do not want to use Maven, you are required to manually add the JAR files
+in the ./lib directory and the Californium core
+(https://github.com/mkovatsc/Californium/tree/master/californium) to your build
+path (e.g., in the Eclipse project properties).
+
+Howto
+-----
 1. App Server starten
 2. Intallieren einer neuen App
 3. Instanzierung einer installierten App
@@ -9,70 +27,67 @@
 8. JavaScript programmieren
 
 
-1. App Server starten
-	Archiv entpacken.
-	Am besten mit Eclipse öffnen und ch.ethz.inf.vs.appserver.AppServer ausführen
-	
-	Konsolen Befehl wäre
-	und im Ordner "AppServer" folgendes ausführen
-	C:\...\AppServer> java -cp bin/;lib/js-14.jar;lib/Californium.jar;lib/E4XUtils.jar ch.ethz.inf.vs.appserver.AppServer
+1. Running Actinium
+-------------------
+  a) with Maven: $ mvn exec:java
+  b) use JAR file: $ java -jar actinium-1.0.0-SNAPSHOT.jar
+  c) in Eclipse: Right-click on AcServer.java -> Run as... -> Java Application
 
-
-2. Installieren einer neuen App:
-	Sende ein POST mit JavaScript Code an /install?[appname]
-	wobei [appname] = gewünschter name
+2. Installing an app
+--------------------
+	Send a CoAP POST to "/install?<appname>" with your JavaScript code as payload.
+	The app will be installed under "/install/<appname>".
+	For instance, you can use the Californium browser or Copper to issue the request.
+	The app will be saved to disk under "./appserver/installed/<appname>.js".
 	
-	Z.B.
-	Request: (POST)
-		URI: coap://localhost:5683/install?appname
-		Payload: app.root.onget = function(request) { request.respond(69,"Hello World"); }
+	Example:
+	Request: POST
+		URI: coap://localhost:5683/install?myapp
+		Payload: app.root.onget = function(request) { request.respond(2.05,"Hello World"); }
 	
-	Response: Application appname successfully installed to /install/appname
+	Response: 2.01 Created
+	  Location: /install/myapp
+	  Payload: Application myapp successfully installed to /install/myapp
+
+3. Instantiating an app
+-----------------------
+	Send a POST to "/install/<appname>" with "name=<instancename>" as payload.
+	The instance is then available under "/apps/running/myinstance".
+	This also creates a configuration file "./appserver/apps/config_myinstance.cfg".
+	It is accessible under "./apps/appconfigs/myinstance". See 5. for changing a configuration.
+
+	Example:
+	Request: POST
+		URI: coap://localhost:5683/install/myapp
+		Payload: name = myinstance
 	
-	Die app liegt nun im Ordner AppServer\appserver\installed\ als File appname.js.
-	Ausserdem wird die Ressource /install/appname erstellt. Von dieser App
-	kann jetzt eine Instanz erstellt werden, die dann läuft.
-
-
-3. Instanzierung einer installierten App
-	Sende POST mit "name=myname" an /install/appname
-
-	Z.B.
-	Zuerst eine Discovery durchführen, dann
-	Request: (POST)
-		URI: coap://localhost:5683/install/appname
-		Payload: name = myname
-	
-	Response: Application myname successfully installed to /apps/running/myname
+	Response: 2.01 Created
+	  Location: /apps/running/myinstance
+	  Payload: Application myapp successfully installed to /apps/running/myinstance
 		
-	Nun wird ein Config File config_myname.cfg für diese App Instanz unter 
-	AppServer\appserver\apps erstellt. Desweiteren wird eine Ressource
-	apps/appconfigs/myname erstellt, welche das Config File der App repräsentiert.
-	
-	Ausserdem wird eine Ressource apps/running/myapp erstellt. Dies
-	ist die eigentliche App Ressource. 
-	
-		
-4. Kommunizieren mit einer installierten App
-	Sende ein GET, POST, PUT oder DELETE an die App.
+4. Communicating with an app
+----------------------------
+	Send requests to any resource under "/apps/running/myinstance".
+	Of course only resources for which a request handler is implemented will be found.
+	In the example installed in 2., it will be the root under "/apps/running/myinstance". 
 
-	Request: (GET)
-		URI: coap://localhost:5683/apps/running/myname
-		Payload: irgendwas
+	Request: GET
+		URI: coap://localhost:5683/apps/running/myinstance
 
-	Response: Hello World
-	
+	Response: 2.05 Content
+	  Payload: Hello World
 
-5. Konfigurieren einer App
-	Einige Eigenschaften einer App können im Nachhinein geändert werden, 
-	andere nicht (z.B. der Name). Die änderungen werden in der Form
+5. Configuring an app
+---------------------
+	Einige Eigenschaften einer App kÃ¶nnen im Nachhinein geÃ¤ndert werden, 
+	andere nicht (z.B. der Name). Die Ã¤nderungen werden in der Form
 	"key = value" mit einem POST an die Config Resource geschickt.
-	Wichtig: POST ändert die Eigenschaften, die im Payload mitgegeben werden
+	Wichtig: POST Ã¤ndert die Eigenschaften, die im Payload mitgegeben werden
 	         PUT hingegen ersetzt die vorhandenen Eigenschaften mit den
 	         Eigenschaften aus dem Payload (d.h. die anderen Eigenschaften
-	         werden gelöscht)
+	         werden gelÃ¶scht)
 	
-	Mit "start", "stop" und "restart" im payload, können Apps gestarten,
+	Mit "start", "stop" und "restart" im payload, kÃ¶nnen Apps gestarten,
 	gestoppt und neu gestartet werden.
 	
 	Z.B.
@@ -95,28 +110,28 @@
 
 6. Vorinstallierte Apps
 Folgende JavaScript Apps sind zur Zeit installiert. 
-Jede App testet eine bestimmte Funktionalität und dient als Beispiel für
+Jede App testet eine bestimmte FunktionalitÃ¤t und dient als Beispiel fÃ¼r
 eigene Apps.
 
 - postcounter
-	Diese App zählt einfach die POST Request. Ein PUT Request setzt den Zähler
-	zurück. GET und DELETE sind nicht implementiert.
+	Diese App zÃ¤hlt einfach die POST Request. Ein PUT Request setzt den ZÃ¤hler
+	zurÃ¼ck. GET und DELETE sind nicht implementiert.
 
 - storage
-	Diese App erstellt bei jedem POST Request (unabhängig vom Payload) eine neue
+	Diese App erstellt bei jedem POST Request (unabhÃ¤ngig vom Payload) eine neue
 	Kinder-Ressource. Die erstellen Kinder Ressourcen verhalten sich genauso.
 	(Ist ein alter Test, um das erstellen neuer Ressourcen on-the-fly zu testen)
 
 - datetime
 	Diese App zeigt das Datum und die Zeit aus veschiedenen Zeitzonen an. Pro
-	Zeitzone existiert eine Ressource, die wiederum jeweils eine Ressource für
-	das Datum und eine für die Zeit enthält.
+	Zeitzone existiert eine Ressource, die wiederum jeweils eine Ressource fÃ¼r
+	das Datum und eine fÃ¼r die Zeit enthÃ¤lt.
 	
 - timer
 	Diese App implementiert einen Timer. Bei einem POST Request wird eine neue
 	Timer Ressource mit dem im Payload liegenden String als Name erstellt. Bei
 	einem PUT Request auf diese Timer Ressource wird die Periode des Timers
-	gemäss Payload geändert (z.b. Paylod "2000" um eine Periode von 2000 ms
+	gemÃ¤ss Payload geÃ¤ndert (z.b. Paylod "2000" um eine Periode von 2000 ms
 	zu erhalten). Nach ablauf einer Periode wird jeweils changed() aufgerufen,
 	welches alle observenden Ressourcen notifiziert. Die App currencyobs
 	verwendet einen solchen Timer.
@@ -126,10 +141,10 @@ eigene Apps.
 	sich als Observer. Alle 2 Sekunden wird sie vom Timer notifiziert und ruft den
 	aktuellen Euro - Schweizer Franken Wechselkurs ab und speichert ihn in einer
 	fortlaufenden Liste.
-	Bei einem GET auf currencyobs wird die Wechselkurs-History zurückgegeben.
+	Bei einem GET auf currencyobs wird die Wechselkurs-History zurÃ¼ckgegeben.
 	
 - responds
-	Testet das Verhalten bei verspäteten Antworten einer Ressource.
+	Testet das Verhalten bei verspÃ¤teten Antworten einer Ressource.
 	Erwartet einen Payload der Form [accept][time] oder nichts
 	accept: request wird akzeptiert mit request.accept()
 	time: Zeit, bis Antwort erfolgt.
@@ -141,21 +156,21 @@ eigene Apps.
 		"500" = no accept, response after 500 ms
 	
 - com_async und com_sync (communicator.js)
-	Testen die CoAPRequest API. Sendet standartmässig an responds, kann aber geändert
+	Testen die CoAPRequest API. Sendet standartmÃ¤ssig an responds, kann aber geÃ¤ndert
 	werden. Mit den 6 Subressourcen async, contentType, locationPath, method, timeout
 	und uri werden die Werte des CoAPRequest gesetzt. Mit der Subressource send
 	wird der Request abgeschickt. Siehe dazu auch Kommenter in communicator.js.
-	(communicator.js ist die App, com_async und com_sync sind zwei unabhängige
+	(communicator.js ist die App, com_async und com_sync sind zwei unabhÃ¤ngige
 	Instanzen davon)
 	
 - performance
 	Zum testen der Performance von Rhino. Verwende "fib", "quick" oder "newton", um
-	zwischen den Algorithmen Fibonacci, Quicksort und Newton Square Root zu wählen.
+	zwischen den Algorithmen Fibonacci, Quicksort und Newton Square Root zu wÃ¤hlen.
 	Siehe dazu auch Kommentar in performance.js.
 	
 	
 7. SimpleAppServer
-	Führt nur eine einzige App aus. Ist für einen Start in der Konsole gedacht.
+	FÃ¼hrt nur eine einzige App aus. Ist fÃ¼r einen Start in der Konsole gedacht.
 	C:\...\AppServer>java -cp bin/;lib/js-14.jar;lib/Californium.jar;lib/E4XUtils.jar ch.ethz.inf.vs.appserver.SimpleAppServer appserver/installed/storage.js
 	
 	
@@ -173,7 +188,7 @@ eigene Apps.
 	app.dump("Hello World");
 	app.error("Hello World");
 	
-	Um eine neue Ressource zu erstellen und an die App zu hängen, verwende
+	Um eine neue Ressource zu erstellen und an die App zu hÃ¤ngen, verwende
 	res = new JavaScriptResource(name);
 	app.root.addSubResource(res);
 	

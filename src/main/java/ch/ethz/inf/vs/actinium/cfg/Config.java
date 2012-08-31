@@ -11,7 +11,7 @@ public class Config extends AbstractConfig {
 	private static final long serialVersionUID = 1132829953418308387L;
 
 	// global configuration constants
-	public static final String PATH = "appserver/config.cfg";
+	public static final String PATH = "appserver/actinium.cfg";
 	
 	// keys
 	public static final String APP_CONFIG_PREFIX = "app_config_prefix";
@@ -26,7 +26,7 @@ public class Config extends AbstractConfig {
 
 	public static final String APPS_RESOURCE_ID = "apps_resource_id"; // identifier of AppResource
 	public static final String CONFIG_RESOURCE_ID = "config_resource_id"; // identifier of this config's resource
-	public static final String INSTALL_RESOURCE_ID = "install_resource_id"; // identifier of InstallResource
+	public static final String INSTALL_RESOURCE_NAME = "install_resource_id"; // identifier of InstallResource
 	public static final String RUNNING_RESOURCE_ID = "running_resource_id"; // identifier of RunningResource
 	public static final String STATS_RESOURCE_ID = "stats_resource_id"; // identifier of StatsResource
 	
@@ -51,18 +51,16 @@ public class Config extends AbstractConfig {
 		setProperty(APP_CONFIG_PREFIX, "config_");
 		setProperty(APP_CONFIG_SUFFIX, ".cfg");
 		
-//		setProperty(APPS_COUNTER, 0);
 		setProperty(START_ON_INSTALL, false);
 		setProperty(APP_PATH, "appserver/installed/");
-		setProperty(APP_CONFIG_PATH, "appserver/apps/");
+		setProperty(APP_CONFIG_PATH, "appserver/instances/");
 		setProperty(JAVASCRIPT_SUFFIX, ".js");
 		
-		setProperty(APPS_RESOURCE_ID, "apps");
 		setProperty(CONFIG_RESOURCE_ID, "config");
-		setProperty(APP_CONFIG_RESOURSES, "appconfigs");
-		
-		setProperty(INSTALL_RESOURCE_ID, "install");
-		setProperty(RUNNING_RESOURCE_ID, "running");
 		setProperty(STATS_RESOURCE_ID, "stats");
+		setProperty(INSTALL_RESOURCE_NAME, "install");
+		setProperty(APPS_RESOURCE_ID, "installed");
+		setProperty(APP_CONFIG_RESOURSES, "instances");
+		setProperty(RUNNING_RESOURCE_ID, "apps");
 	}
 }

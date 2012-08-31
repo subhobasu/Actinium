@@ -58,7 +58,7 @@ public class AppManager {
 	
 	// the config of the app server
 	private Config config;
-	
+
 	// AppResource, the root of all running apps related resources
 	private AppResource appresource; // possibly null in the beginning
 	
@@ -71,6 +71,15 @@ public class AppManager {
 	 */
 	public AppManager(Config config) {
 		this.config = config;
+	}
+
+	/**
+	 * Retrieve the current Ac configuration.
+	 * 
+	 * @return the current config
+	 */
+	public Config getConfig() {
+		return config;
 	}
 	
 	/**
@@ -160,7 +169,7 @@ public class AppManager {
 	}
 
 	/**
-	 * Installs a new instance of an app specified by the given AppConfig. First
+	 * Stores a new instance of an app specified by the given AppConfig. First
 	 * the AppManager ensures, that name and specified app are valid. If not, a
 	 * nIllegalArgumentException is thrown. If they are fine, the AppConfig is
 	 * stored to disk, a new AbstractApp is created and added to AppResource and
@@ -169,7 +178,7 @@ public class AppManager {
 	 * @param appcfg the AppConfig with the properties for the app
 	 * @return the path to the newly created app instance.
 	 */
-	public String installNewApp(AppConfig appcfg) {
+	public String instantiateApp(AppConfig appcfg) {
 		String configPath = createAppConfigPath(appcfg.getName());
 		appcfg.setConfigPath(configPath);
 
@@ -191,7 +200,7 @@ public class AppManager {
 	 * Ensures, that the given AppConfig contains a valid app, i.e. it exists.
 	 * @param appcfg the Appconfig to be validated.
 	 */
-	private void ensureValidAppPath(AppConfig appcfg) {
+	public void ensureValidAppPath(AppConfig appcfg) {
 		String appname = appcfg.getProperty(AppConfig.APP);
 		if (appname==null)
 			throw new IllegalArgumentException("There is no app specified to be executed (use e.g. app = my_app_name).");
@@ -201,9 +210,6 @@ public class AppManager {
 			throw new IllegalArgumentException("There is no app with the specified name "+appname);
 		
 		appcfg.setProperty(AppConfig.DIR_PATH, config.getProperty(Config.APP_PATH));
-//		String apppath = config.getProperty(Config.APP_PATH) + filename;
-//		System.out.println("set app path to "+apppath);
-//		appcfg.setProperty(AppConfig.PATH, apppath);
 	}
 
 	/**
@@ -233,7 +239,7 @@ public class AppManager {
 	 * 
 	 * @param appcfg the AppConfig to be validated.
 	 */
-	private void ensureValidName(AppConfig appcfg) {
+	public void ensureValidName(AppConfig appcfg) {
 		String name = appcfg.getName();
 		if (name==null || name.equals(AppConfig.UNNAMED))
 			throw new IllegalArgumentException("No name has been specified for the app: "+name);
@@ -250,7 +256,7 @@ public class AppManager {
 	 * @param name the name of the app instance.
 	 * @return the path to the config file of the app instance.
 	 */
-	private String createAppConfigPath(String name) {
+	public String createAppConfigPath(String name) {
 		String path = config.getProperty(Config.APP_CONFIG_PATH);
 		String prefix = config.getProperty(Config.APP_CONFIG_PREFIX); 
 		String suffix = config.getProperty(Config.APP_CONFIG_SUFFIX);
@@ -267,7 +273,7 @@ public class AppManager {
 	 * @param appcfg the properties for the new app instance.
 	 * @return an AbstractApp with the specified properties. 
 	 */
-	private AbstractApp createApp(AppConfig appcfg) {
+	public AbstractApp createApp(AppConfig appcfg) {
 		String type = appcfg.getProperty(AppConfig.TYPE);
 		if (type==null)
 			throw new NullPointerException("App config "+appcfg+" returned null as app type");

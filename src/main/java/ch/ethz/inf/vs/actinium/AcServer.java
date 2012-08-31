@@ -51,8 +51,8 @@ public class AcServer extends LocalEndpoint {
 		
 		this.manager = new AppManager(config);
 		
-		AppResource appres = new AppResource(config, manager);
-		InstallResource insres = new InstallResource(config, manager);
+		AppResource appres = new AppResource(manager);
+		InstallResource insres = new InstallResource(manager);
 
 		this.addResource(appres);
 		this.addResource(insres);
