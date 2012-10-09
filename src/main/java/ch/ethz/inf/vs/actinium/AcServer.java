@@ -14,6 +14,7 @@ import ch.ethz.inf.vs.californium.coap.OptionNumberRegistry;
 import ch.ethz.inf.vs.californium.endpoint.LocalEndpoint;
 import ch.ethz.inf.vs.californium.endpoint.LocalResource;
 import ch.ethz.inf.vs.californium.endpoint.Resource;
+import ch.ethz.inf.vs.californium.endpoint.DiscoveryResource;
 import ch.ethz.inf.vs.californium.util.Log;
 
 /**
@@ -54,11 +55,10 @@ public class AcServer extends LocalEndpoint {
 		AppResource appres = new AppResource(manager);
 		InstallResource insres = new InstallResource(manager);
 
-		this.addResource(appres);
+		this.rootResource = appres;
+		this.addResource(new DiscoveryResource(rootResource));
 		this.addResource(insres);
-
-		this.addResource(
-				config.createConfigResource(config.getProperty(Config.CONFIG_RESOURCE_ID)));
+		this.addResource(config.createConfigResource(config.getProperty(Config.CONFIG_RESOURCE_ID)));
 		
 		this.stats = new StatsResource(config, manager);
 		this.addResource(stats);

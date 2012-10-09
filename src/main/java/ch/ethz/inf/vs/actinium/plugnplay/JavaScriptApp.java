@@ -109,9 +109,7 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 	public void run() {
 		try {
 			// Load JavaScript code
-			String path = appcfg.getProperty(AppConfig.DIR_PATH) +
-			appcfg.getProperty(AppConfig.APP) +
-			"." + AppType.getAppSuffix(appcfg.getProperty(AppConfig.TYPE));
+			String path = appcfg.getProperty(AppConfig.DIR_PATH) + appcfg.getProperty(AppConfig.APP) + "." + AppType.getAppSuffix(appcfg.getProperty(AppConfig.TYPE));
 		
 			File file = new File(path);
 			Scanner scanner = new Scanner(file).useDelimiter("\\Z");

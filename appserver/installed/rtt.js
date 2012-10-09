@@ -12,7 +12,7 @@ function pollNode() {
 	
 	var sent = 0;
 	
-	for (var i=0; i<1000; ++i) {
+	for (var i=0; i<2; ++i) {
 		client.open("GET", uri, false);
 		var t0 = app.getNanoTime();
 		client.send('');

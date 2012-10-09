@@ -190,10 +190,9 @@ public class AppManager {
 		AbstractApp app = createApp(appcfg);
 		appresource.installApp(app);
 		
-		if (statsresource!=null)
-			statsresource.oninstallApp(app.getName());
+		if (statsresource!=null) statsresource.oninstallApp(app.getName());
 		
-		return app.getPath();
+		return config.getProperty(Config.APP_CONFIG_RESOURSES) + "/" + appcfg.getName();
 	}
 	
 	/**

@@ -142,22 +142,12 @@ public class AppCodeResource extends LocalResource {
 			AppConfig appcfg = convertToAppConfig(payload);
 			appcfg.setProperty(AppConfig.APP, name);
 			
-			appcfg.setConfigPath( manager.createAppConfigPath(appcfg.getName()) );
-			manager.ensureValidAppPath(appcfg);
-			manager.ensureValidName(appcfg);
-			appcfg.store();
-			
-			AbstractApp app = manager.createApp(appcfg);
-			add(app);
-			
-//			if (statsresource!=null)
-//				statsresource.oninstallApp(app.getName());
-			
+			String newpath = manager.instantiateApp(appcfg);
 
 			// inform client about the location of the new resource
 			Response response = new Response(CodeRegistry.RESP_CREATED);
-			response.setPayload("Application "+name+" successfully installed to "+app.getPath());
-			response.setLocationPath(app.getPath());
+			response.setPayload("Application "+name+" successfully installed to "+newpath);
+			response.setLocationPath(newpath);
 			
 			request.respond(response);
 			
