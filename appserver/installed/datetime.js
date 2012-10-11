@@ -55,6 +55,7 @@ function MyDate(ts) {
 }
 
 function MyTime(ts) {
+	
 	this.time = new Date(ts);
 	this.timestamp = app.getTime();
 	this.id = "timeResource";
@@ -84,6 +85,9 @@ function MyTime(ts) {
 	this.resTime.isObservable(true);
 	
 	var mythis = this;
+	
+	app.setInterval(function() { mythis.resTime.changed(); }, 5000);
+	
 	this.resTime.onget = function(request) {
 			request.respond(CodeRegistry.RESP_CONTENT,mythis.getTime());
 	};
@@ -133,4 +137,3 @@ app.root.add(datetimeCET.resource);
 app.root.add(datetimeUTC.resource);
 app.root.add(datetimeEST.resource);
 app.root.add(datetimeKST.resource);
-

@@ -5,12 +5,11 @@ import java.util.logging.Level;
 
 import ch.ethz.inf.vs.actinium.cfg.Config;
 import ch.ethz.inf.vs.actinium.install.InstallResource;
+import ch.ethz.inf.vs.actinium.jscoap.JavaScriptResource;
 import ch.ethz.inf.vs.actinium.plugnplay.AbstractApp;
+import ch.ethz.inf.vs.actinium.plugnplay.JavaScriptApp;
 import ch.ethz.inf.vs.californium.coap.CodeRegistry;
 import ch.ethz.inf.vs.californium.coap.Request;
-import ch.ethz.inf.vs.californium.coap.GETRequest;
-import ch.ethz.inf.vs.californium.coap.ObservingManager;
-import ch.ethz.inf.vs.californium.coap.OptionNumberRegistry;
 import ch.ethz.inf.vs.californium.endpoint.LocalEndpoint;
 import ch.ethz.inf.vs.californium.endpoint.LocalResource;
 import ch.ethz.inf.vs.californium.endpoint.Resource;
@@ -47,12 +46,16 @@ public class AcServer extends LocalEndpoint {
 	 * @throws SocketException if the Socket is blocked.
 	 */
 	public AcServer(Config config) throws SocketException {
+		
+		Log.setLevel(Level.ALL);
+		Log.init();
+		
 		this.config = config;
 		
 		this.manager = new AppManager(config);
 		
-		AppResource appres = new AppResource(config, manager);
-		InstallResource insres = new InstallResource(config, manager);
+		AppResource appres = new AppResource(manager);
+		InstallResource insres = new InstallResource(manager);
 
 		this.addResource(appres);
 		this.addResource(insres);
@@ -100,46 +103,44 @@ public class AcServer extends LocalEndpoint {
 
 			// check if resource available
 			if (resource != null) {
-
-				String appname = getAppName(resource);
-				if (appname!=null) { // request for a subresource of an app
-					// invoke request handler of the app the resource belongs to
-					/*
-					 * An app or its subresources must not block the receiver
-					 * thread. Therefore every app has its own thread for
-					 * handling requests.
-					 */
-					AbstractApp app = manager.getApp(appname);
-					app.deliverRequestToSubResource(request, resource);
+				
+				request.setResource(resource);
+				
+				if (resource instanceof JavaScriptApp) {
 					
-				} else { // request not for a subresource of an app
+					JavaScriptApp appRes = (JavaScriptApp) resource;
+					
+					String appname = appRes.getName();
+					if (appname!=null) { // request for a subresource of an app
+						// invoke request handler of the app the resource belongs to
+						/*
+						 * An app or its subresources must not block the receiver
+						 * thread. Therefore every app has its own thread for
+						 * handling requests.
+						 */
+						AbstractApp app = manager.getApp(appname);
+						app.deliverRequestToSubResource(request, resource);
+					}
+					
+
+				} else if (resource instanceof JavaScriptResource) {
+					
+					String appname = getAppName(resource);
+					
+					if (appname!=null) { // request for a subresource of an app
+						// invoke request handler of the app the resource belongs to
+						/*
+						 * An app or its subresources must not block the receiver
+						 * thread. Therefore every app has its own thread for
+						 * handling requests.
+						 */
+						AbstractApp app = manager.getApp(appname);
+						app.deliverRequestToSubResource(request, resource);
+					}
+					
+				} else {
 					// invoke request handler of the resource
 					request.dispatch(resource);
-					
-					// check if resource did generate a response
-					if (request.getResponse()!=null) {
-					
-						// check if resource is to be observed
-						if (resource.isObservable() &&
-							request instanceof GETRequest &&
-							CodeRegistry.responseClass(request.getResponse().getCode())==CodeRegistry.CLASS_SUCCESS) {
-							
-							if (request.hasOption(OptionNumberRegistry.OBSERVE)) {
-								
-								// establish new observation relationship
-								ObservingManager.getInstance().addObserver((GETRequest) request, resource);
-		
-							} else if (ObservingManager.getInstance().isObserved(request.getPeerAddress().toString(), resource)) {
-		
-								// terminate observation relationship on that resource
-								ObservingManager.getInstance().removeObserver(request.getPeerAddress().toString(), resource);
-							}
-							
-						}
-						
-						// send response here
-						request.sendResponse();
-					}
 				}
 
 			} else {
@@ -147,7 +148,6 @@ public class AcServer extends LocalEndpoint {
 				System.out.printf("[%s] Resource not found: '%s'\n", getClass().getName(), request.getUriPath());
 
 				request.respond(CodeRegistry.RESP_NOT_FOUND);
-				request.sendResponse();
 			}
 		}
 	}

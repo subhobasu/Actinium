@@ -35,9 +35,6 @@ import ch.ethz.inf.vs.californium.endpoint.LocalResource;
  * @author Martin Lanter
  */
 public class InstallResource extends LocalResource {
-
-	// The config of the app server
-	private Config config;
 	
 	// The reference to the AppManager is only needet to give it to InstalledAppResource
 	private AppManager manager;
@@ -49,14 +46,14 @@ public class InstallResource extends LocalResource {
 	 * @param config the config of the app server
 	 * @param manager the manager for all apps
 	 */
-	public InstallResource(Config config, AppManager manager) {
-		super(config.getProperty(Config.INSTALL_RESOURCE_ID));
-		this.config = config;
+	public InstallResource(AppManager manager) {
+		super(manager.getConfig().getProperty(Config.INSTALL_RESOURCE_ID));
+		
 		this.manager = manager;
 		
 		String[] installed = getInstalledAppsName();
 		for (String inst:installed) {
-			InstalledAppResource res = new InstalledAppResource(config, inst, manager);
+			InstalledAppResource res = new InstalledAppResource(inst, manager);
 			addInstalledAppResource(res);
 		}
 		
@@ -180,7 +177,7 @@ public class InstallResource extends LocalResource {
 					"Choose another name or update the current app with a PUT request");
 
 		// we have a valid name, store program to disk
-		InstalledAppResource res = new InstalledAppResource(config, name, payload, manager);
+		InstalledAppResource res = new InstalledAppResource(name, payload, manager);
 		addInstalledAppResource(res);
 		
 		return res.getPath();
@@ -202,8 +199,8 @@ public class InstallResource extends LocalResource {
 	 * @return the path to the app with this name
 	 */
 	private String getAppPath(String name) {
-		String path = config.getProperty(Config.APP_PATH);
-		return path + name + config.getProperty(Config.JAVASCRIPT_SUFFIX);
+		String path = manager.getConfig().getProperty(Config.APP_PATH);
+		return path + name + manager.getConfig().getProperty(Config.JAVASCRIPT_SUFFIX);
 	}
 
 	/**
@@ -213,7 +210,7 @@ public class InstallResource extends LocalResource {
 	 * @return an array with the names of all installed apps
 	 */
 	private String[] getInstalledAppsName() {
-		String path = config.getProperty(Config.APP_PATH);
+		String path = manager.getConfig().getProperty(Config.APP_PATH);
 		String[] files = new File(path).list();
 		String[] ret = new String[files.length];
 		for (int i=0;i<files.length;i++) {

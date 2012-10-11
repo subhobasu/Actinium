@@ -109,9 +109,7 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 	public void run() {
 		try {
 			// Load JavaScript code
-			String path = appcfg.getProperty(AppConfig.DIR_PATH) +
-			appcfg.getProperty(AppConfig.APP) +
-			"." + AppType.getAppSuffix(appcfg.getProperty(AppConfig.TYPE));
+			String path = appcfg.getProperty(AppConfig.DIR_PATH) + appcfg.getProperty(AppConfig.APP) + "." + AppType.getAppSuffix(appcfg.getProperty(AppConfig.TYPE));
 		
 			File file = new File(path);
 			Scanner scanner = new Scanner(file).useDelimiter("\\Z");
@@ -198,30 +196,46 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 	
 	@Override
 	public void performGET(GETRequest request) {
-		if (appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY))
+		if (this.onget==null) {
+			request.respond(CodeRegistry.RESP_METHOD_NOT_ALLOWED, "GET handler not implemented");
+		} else if (!appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY)) {
+			request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		} else {
 			requestHandler.performGET(request);
-		else request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		}
 	}
 
 	@Override
 	public void performPUT(PUTRequest request) {
-		if (appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY))
+		if (this.onput==null) {
+			request.respond(CodeRegistry.RESP_METHOD_NOT_ALLOWED, "PUT handler not implemented");
+		} else if (!appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY)) {
+			request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		} else {
 			requestHandler.performPUT(request);
-		else request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		}
 	}
 
 	@Override
 	public void performPOST(POSTRequest request) {
-		if (appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY))
+		if (this.onput==null) {
+			request.respond(CodeRegistry.RESP_METHOD_NOT_ALLOWED, "POST handler not implemented");
+		} else if (!appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY)) {
+			request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		} else {
 			requestHandler.performPOST(request);
-		else request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		}
 	}
 
 	@Override
 	public void performDELETE(DELETERequest request) {
-		if (appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY))
+		if (this.onput==null) {
+			request.respond(CodeRegistry.RESP_METHOD_NOT_ALLOWED, "DELETE handler not implemented");
+		} else if (!appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY)) {
+			request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		} else {
 			requestHandler.performDELETE(request);
-		else request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
+		}
 	}
 
 	/**

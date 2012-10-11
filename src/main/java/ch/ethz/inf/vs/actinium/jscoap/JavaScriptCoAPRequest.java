@@ -2,6 +2,7 @@ package ch.ethz.inf.vs.actinium.jscoap;
 
 import java.util.List;
 
+import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Undefined;
 
@@ -65,8 +66,13 @@ public class JavaScriptCoAPRequest extends ScriptableObject implements CoAPConst
 	 * Rhino: Only one method jsFunction_respond is allowed
 	 */
 	public void jsFunction_respond(Object jscode, Object jsmessage, Object jscontentType) {
-		respond(jscode, jsmessage, jscontentType);
+		respond(jscode, Context.toString(jsmessage), jscontentType);
 	}
+	
+	public void jsFunction_sendResponse() {
+		//request.sendResponse();
+	}
+	
 	
 	public String jsFunction_getPayload() {
 		return request.getPayloadString();

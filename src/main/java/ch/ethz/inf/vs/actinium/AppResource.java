@@ -36,8 +36,7 @@ import ch.ethz.inf.vs.californium.endpoint.LocalResource;
  */
 public class AppResource extends LocalResource {
 
-	// the config of the app server
-	private Config config;
+	private AppManager manager;
 	
 	// the list of all apps
 	private List<AbstractApp> apps;
@@ -58,27 +57,22 @@ public class AppResource extends LocalResource {
 	 * @param config the app server's config
 	 * @param manager the AppManager
 	 */
-	public AppResource(Config config, AppManager manager) {
-		super(config.getProperty(Config.APPS_RESOURCE_ID), false);
+	public AppResource(AppManager manager) {
+		super(manager.getConfig().getProperty(Config.APPS_RESOURCE_ID), false);
 		
-		this.config = config;
+		this.manager = manager;
+		
 		this.apps = new LinkedList<AbstractApp>();
 		
-		this.appConfigsRes = new AppConfigsResource(config.getProperty(Config.APP_CONFIG_RESOURSES));
+		this.appConfigsRes = new AppConfigsResource(manager.getConfig().getProperty(Config.APP_CONFIG_RESOURSES));
 		add(appConfigsRes);
 		
-		this.runningRes = new RunningResource(config);
+		this.runningRes = new RunningResource(manager.getConfig());
 		add(runningRes);
-		
-//		add(
-//				config.createConfigResource(config.getProperty(Config.CONFIG_RESOURCE_ID)));
 		
 		List<AbstractApp> allapps = manager.loadAllApps();
 		for (AbstractApp app:allapps) {
 			addApp(app);
-//			if (app.getConfig().getBool(AppConfig.START_ON_STARTUP)) {
-//				app.start();
-//			}
 		}
 
 		manager.setAppResource(this);
@@ -177,7 +171,7 @@ public class AppResource extends LocalResource {
 	 */
 	public void installApp(AbstractApp app) {
 		addApp(app);
-		if (config.getBool(Config.START_ON_INSTALL)) {
+		if (manager.getConfig().getBool(Config.START_ON_INSTALL)) {
 			app.start();
 		}
 	}

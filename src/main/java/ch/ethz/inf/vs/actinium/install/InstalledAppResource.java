@@ -35,9 +35,6 @@ public class InstalledAppResource extends LocalResource {
 	
 	// the name of this app
 	private String name;
-
-	// the app server's config
-	private Config config;
 	
 	// the AppManager that manages the instances of all apps
 	private AppManager manager;
@@ -51,10 +48,9 @@ public class InstalledAppResource extends LocalResource {
 	 * @param config - The config of the server
 	 * @param name - The name of the installed app and this resource
 	 */
-	public InstalledAppResource(Config config, String name, AppManager manager) {
+	public InstalledAppResource(String name, AppManager manager) {
 		super(name);
 		this.name = name;
-		this.config = config;
 		this.manager = manager;
 		
 		isObservable(true);
@@ -68,8 +64,8 @@ public class InstalledAppResource extends LocalResource {
 	 * @param name - The name of the installed app and this resource
 	 * @param code - The code of the installed app
 	 */
-	public InstalledAppResource(Config config, String name, String code, AppManager manager) {
-		this(config, name, manager);
+	public InstalledAppResource(String name, String code, AppManager manager) {
+		this(name, manager);
 		storeApp(code);
 	}
 
@@ -145,7 +141,7 @@ public class InstalledAppResource extends LocalResource {
 			AppConfig appcfg = convertToAppConfig(payload);
 			appcfg.setProperty(AppConfig.APP, name);
 			
-			String newpath = manager.installNewApp(appcfg);
+			String newpath = manager.instantiateApp(appcfg);
 
 			// inform client about the location of the new resource
 			Response response = new Response(CodeRegistry.RESP_CREATED);
@@ -261,6 +257,6 @@ public class InstalledAppResource extends LocalResource {
 	 * @return the path to the file with the code of this app.
 	 */
 	private String getInstalledPath() {
-		return config.getProperty(Config.APP_PATH)+name+config.getProperty(Config.JAVASCRIPT_SUFFIX);
+		return manager.getConfig().getProperty(Config.APP_PATH)+name+manager.getConfig().getProperty(Config.JAVASCRIPT_SUFFIX);
 	}
 }
