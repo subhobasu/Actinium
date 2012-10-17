@@ -99,6 +99,10 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 	protected synchronized void shutdownImpl() {
 		thread.interrupt();
 		cleanup(); // call app.onunload in JavaScript
+		
+		for (JavaScriptTimeoutTask task : jsaccess.tasks.values()) {
+			task.cancel();
+		}
 	}
 
 	/**
