@@ -1,6 +1,5 @@
 package ch.ethz.inf.vs.actinium.jscoap;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -142,15 +141,15 @@ public class CoAPRequest implements CoAPConstants {
 	
 	/**
 	 * Send an empty message.
-	 * @throws IOException
 	 */
-	public void send() throws IOException {
+	public void send() {
 		send("");
 	}
 
 	/**
 	 * Send the specified data.
 	 * @param data data to send
+	 * @throws InterruptedException 
 	 */
 	public void send(String data) {
 		

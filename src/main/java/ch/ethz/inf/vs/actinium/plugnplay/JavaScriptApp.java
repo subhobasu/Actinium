@@ -90,6 +90,10 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 		if (started) {
 			thread.interrupt();
 			cleanup();
+
+			for (JavaScriptTimeoutTask task : jsaccess.tasks.values()) {
+				task.cancel();
+			}
 		}
 		started = false;
 		start();
@@ -497,8 +501,10 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 					Scriptable scope = function.getParentScope();
 					// there is no this-object for this function, not even jsaccess, so it's null
 					function.call(cx, scope, null, args);
-					
+				} catch (WrappedException e) {
+					LOG.warning(String.format("App %s had JS exception: %s", getName(), e.getMessage()));
 				} catch (Exception e) {
+					LOG.severe(String.format("App %s crashed: %s", getName(), e.getMessage()));
 					e.printStackTrace();
 				} finally {
 					Context.exit();

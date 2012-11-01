@@ -68,10 +68,10 @@ public class SynchronousSender extends AbstractSender {
 				}
 			}
 		} catch (InterruptedException e) {
-			throw new RequestErrorException(e);
+			throw new RequestErrorException(e.getMessage());
 		} catch (IOException e) {
 			handleError(onerror);
-			throw new NetworkErrorException(e.toString());
+			throw new NetworkErrorException(e.getMessage());
 		}
 	}
 				

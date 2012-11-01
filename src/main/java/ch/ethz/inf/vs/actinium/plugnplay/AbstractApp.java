@@ -2,6 +2,7 @@ package ch.ethz.inf.vs.actinium.plugnplay;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Logger;
 
 import ch.ethz.inf.vs.actinium.cfg.AppConfig;
 import ch.ethz.inf.vs.actinium.cfg.AbstractConfig.ConfigChangeSet;
@@ -26,6 +27,10 @@ import ch.ethz.inf.vs.californium.endpoint.Resource;
  * @author Martin Lanter
  */
 public abstract class AbstractApp extends LocalResource implements PlugAndPlayable, Observer {
+
+	// Logging /////////////////////////////////////////////////////////////////////
+		
+	protected static final Logger LOG = Logger.getLogger(AbstractApp.class.getName());
 
 	// properties of this app
 	private AppConfig appcfg;
@@ -103,9 +108,13 @@ public abstract class AbstractApp extends LocalResource implements PlugAndPlayab
 		ConfigChangeSet set = (ConfigChangeSet) arg;
 		if (set.contains(AppConfig.RUNNING)) {
 			String running = appcfg.getProperty(AppConfig.RUNNING);
-			if (running.equals(AppConfig.START) && !started) start();
-			else if (running.equals(AppConfig.RESTART)) restart();
-			else if (running.equals(AppConfig.STOP) && started) shutdown();
+			if (running.equals(AppConfig.START) && !started) {
+				start();
+			} else if (running.equals(AppConfig.RESTART)) {
+				restart();
+			} else if (running.equals(AppConfig.STOP) && started) {
+				shutdown();
+			}
 		}
 		if (set.contains(AppConfig.RESOURCE_TITLE)) {
 			setTitle(appcfg.getProperty(AppConfig.RESOURCE_TITLE));

@@ -47,7 +47,7 @@ public class AcServer extends LocalEndpoint {
 	 */
 	public AcServer(Config config) throws SocketException {
 		
-		Log.setLevel(Level.ALL);
+		//Log.setLevel(Level.ALL);
 		Log.init();
 		
 		this.config = config;
