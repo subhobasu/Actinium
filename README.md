@@ -134,3 +134,14 @@ You can dump information to the console through the app object:
 
 		app.dump("Hello World");
 		app.error("Houston, we have a problem");
+
+### AcShell
+
+The `AcShell` can be used to run a single app from the command line.
+Start with:
+
+	Windows:
+		java -cp "target/classes;lib/*" ch.ethz.inf.vs.actinium.AcShell file.js
+	
+	Linux:
+		java -cp "target/classes:lib/*" ch.ethz.inf.vs.actinium.AcShell file.js

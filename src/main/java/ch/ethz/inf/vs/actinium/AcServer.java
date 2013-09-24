@@ -187,7 +187,7 @@ public class AcServer extends LocalEndpoint {
 			Config config = new Config();
 			AcServer server = new AcServer(config);
 			
-			System.out.println("App Server listening on port "+server.port());
+			System.out.println("Actinium (Ac) App-server listening on port "+server.port());
 			
 		} catch (SocketException e) {
 			e.printStackTrace();

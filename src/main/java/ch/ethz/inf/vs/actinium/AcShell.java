@@ -120,7 +120,7 @@ public class AcShell extends LocalEndpoint {
 			if (port==-1) server = new AcShell(file, name);
 			else server = new AcShell(file, name, port);
 			
-			System.out.println("Simple App Server listening on port "+server.port());
+			System.out.println("Actinium (Ac) App-server listening on port "+server.port());
 			server.execute();
 			
 		} catch (Exception e) {
@@ -132,17 +132,13 @@ public class AcShell extends LocalEndpoint {
 	
 	public static void printInfo() {
 		System.out.println(
-				"Simple App Server" +
+				"Actinium (Ac) Shell" +
 				"\n" +
-				"\nUsage: SimpleApp [-port] [-name] FILE" +
+				"\nUsage: AcShell [-port] [-name] FILE" +
 				"\n  FILE : The JavaScript app to be launched" +
 				"\nOptions:" +
 				"\n  -port: Listen on specified port (Default: 5683)" +
-				"\n  -name: Name of the created Resource (Default: filename)" +
-				"\n" + 
-				"\nExamples:" +
-				"\n  SimpleAppClient myscript.js" +
-				"\n  SimpleAppClient -port 62333 myscript.js"
+				"\n  -name: Name of the created Resource (Default: filename)"
 			);
 	}
 	
