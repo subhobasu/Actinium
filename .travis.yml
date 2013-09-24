@@ -1,0 +1,9 @@
+language: java
+
+jdk: oraclejdk6
+
+script: "mvn clean deploy"
+
+env:
+  global:
+    secure: "ER9QXZqnB4Qo8c3wRKm0VDVijWgRGGQyIY4VvvSoSpcuiVB5jmYB2HFD8ZUGiMt+wQJqfaFPbZGdX3UFh8Xp+NnReV0xJ39RmJLPDo+zSkURMFC+dAb6YcS8hcfeSlI3PuWKaBaVH+Y0aIcJ+hhyvVpgCg8qEt8/fjQK0eyvYqg="
