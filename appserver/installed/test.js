@@ -1,5 +1,4 @@
-
-/**
+/*
  * Communicator tests the CoAPRequest API.
  *
  * Communicator contains 6 subresources to adjust the CoAPRequest
@@ -24,9 +23,8 @@
  * In short: Specify the values of a CoAPRequest with subresources
  * from above and then send a POST to send to send the CoAPRequest.
  */
- 
- 
- app.dump("huhu");
+  
+ app.dump("Starting test...");
  
 var target = app.getProperty("target");
 var isasync = app.getProperty("send_async","true");

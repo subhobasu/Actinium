@@ -1,5 +1,4 @@
-
-/**
+/*
  * Communicator tests the CoAPRequest API.
  *
  * Communicator contains 6 subresources to adjust the CoAPRequest

@@ -1,4 +1,4 @@
-/**
+/*
  * Storage is a test app for the AppServer.
  * Send a POST request with a name as payload to create a new subresource with the specified name.
  * Send a PUT request with a text as payload to store the specified text inside the resource.

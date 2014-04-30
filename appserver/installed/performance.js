@@ -1,4 +1,4 @@
-/**
+/*
  * App to evaluate Rhino in AppServer
  * Quicksort source: http://en.literateprograms.org/Quicksort_%28JavaScript%29#chunk%20def:partition
  * JS = 10*Java: http://www.pankaj-k.net/spubs/articles/beanshell_rhino_and_java_perf_comparison/index.html

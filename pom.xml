@@ -11,11 +11,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ethz.inf.vs</groupId>
 	<artifactId>actinium</artifactId>
-	<version>1.8.0</version>
+	<version>1.8.1-final</version>
 	<packaging>jar</packaging>
 
-	<name>Actinium</name>
-	<description>Actinium (Ac) App-server for Californium</description>
+	<name>Actinium (Ac)</name>
+	<description>App-server for Californium</description>
 	<url>http://people.inf.ethz.ch/mkovatsc/actinium.php</url>
 
 	<organization>
@@ -48,9 +48,7 @@
 		<developer>
 			<id>lanterm</id>
 			<name>Martin Lanter</name>
-			<email>lanterm@student.ethz.ch</email>
-			<organization>ETH Zurich</organization>
-			<organizationUrl>http://www.vs.inf.ethz.ch/</organizationUrl>
+			<email>martin.lanter@gmx.ch</email>
 			<roles>
 				<role>developer</role>
 				<role>architect</role>

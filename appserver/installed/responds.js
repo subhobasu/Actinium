@@ -1,4 +1,4 @@
-/**
+/*
  * This app tests the bahavior of another resource in the event of a delay.
  * Send a POST request with payload [accept][time] (payload can be empty).
  *   accept: accept the request (request.accept())

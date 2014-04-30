@@ -226,7 +226,7 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 
 	@Override
 	public void performPOST(POSTRequest request) {
-		if (this.onput==null) {
+		if (this.onpost==null) {
 			request.respond(CodeRegistry.RESP_METHOD_NOT_ALLOWED, "POST handler not implemented");
 		} else if (!appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY)) {
 			request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
@@ -237,7 +237,7 @@ public class JavaScriptApp extends AbstractApp implements CoAPConstants {
 
 	@Override
 	public void performDELETE(DELETERequest request) {
-		if (this.onput==null) {
+		if (this.ondelete==null) {
 			request.respond(CodeRegistry.RESP_METHOD_NOT_ALLOWED, "DELETE handler not implemented");
 		} else if (!appcfg.getBool(AppConfig.ENABLE_REQUEST_DELIVERY)) {
 			request.respond(CodeRegistry.RESP_FORBIDDEN, "Request delivery has been disabled for this app");
