@@ -1,4 +1,4 @@
-Actinium (Ac) App-server for Californium
+AActinium (Ac) App-server for Californium
 ========================================
 
 Uses [draft-ietf-core-coap-08](http://tools.ietf.org/html/draft-ietf-core-coap-08)
